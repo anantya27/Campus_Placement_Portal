@@ -2,16 +2,16 @@ import React,{useEffect,useRef} from 'react'
 import { useState } from 'react';
 import { useParams } from "react-router-dom";
 import { Peer } from "peerjs";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import $ from "jquery";
 import MainTools from './MainTools';
 
-function Room() {
+function Room({socket}) {
 
   const { roomId } = useParams();
   // console.log(roomId);
-  const socket=io("http://localhost:3030");
+  // const socket=io("http://localhost:3030");
 
   const [streamCreated, setStreamCreated] = useState(false)
   const [text, setText] = useState("");

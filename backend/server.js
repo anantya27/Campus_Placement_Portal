@@ -29,6 +29,10 @@ io.on('connection', socket => {
 
     // console.log(socket.id);
 
+    // socket.on("connection",()=>{
+    //     console.log("connection established");
+    // });
+
     socket.on('join-room', (roomId,userId) => {
         
         roomIdGlobal=roomId;
@@ -38,15 +42,32 @@ io.on('connection', socket => {
         // console.log("joined room");
 
         // socket.on('test',()=>{
-        //     console.log("test done!!!!!!!!!!1")
+        //     socket.to(roomId).emit('testing');
+        //     console.log("test done!!!!!!!!!!1",roomId)
         // });
+
 
         socket.on('message', (message) => {
             //send message to the same room
             console.log("on Server>>>>>",message);
             io.to(roomId).emit('createMessage', message);
         }); 
+
+        socket.on("canvas-data",(data)=>{
+            // console.log("data recived");
+            socket.to(roomId).emit('canvas-data',data);
+        });
     }); 
+
+    // socket.on('test',()=>{
+    //     socket.to(roomIdGlobal).emit('testing');
+    //     console.log("test done!!!!!!!!!!1",roomIdGlobal)
+    // });
+
+    // socket.on("canvas-data",(data)=>{
+    //     console.log("data recived");
+    //     socket.to(roomIdGlobal).emit('canvas-data',data);
+    // });
 
     // socket.on('test',()=>{
     //     console.log("test done!!!!!!!!!!1")
