@@ -7,7 +7,7 @@ import io from "socket.io-client";
 
 import Home from "./MyComponents/Home";
 import Room from "./MyComponents/Room";
-// import WhiteboardComp from './MyComponents/WhiteboardComp'; abc
+// import WhiteboardComp from './MyComponents/WhiteboardComp';
 import Container from './MyComponents/WhiteBoardComponent/container/Container';
 
 function App() {
