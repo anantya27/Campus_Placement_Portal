@@ -24,6 +24,19 @@ app.get('/',(req,res)=>{
 } )
 
 let roomIdGlobal;
+const userSocketMap ={};
+
+function getAllConnectedClients(roomId) {
+    // Map
+    return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
+        (socketId) => {
+            return {
+                socketId,
+                username: userSocketMap[socketId],
+            };
+        }
+    );
+}
 
 io.on('connection', socket => {
 
@@ -58,6 +71,39 @@ io.on('connection', socket => {
             socket.to(roomId).emit('canvas-data',data);
         });
     }); 
+
+    socket.on("ide-join",({roomId,username})=>{
+        userSocketMap[socket.id]=username;
+        socket.join(roomId);
+        const clients = getAllConnectedClients(roomId);
+        clients.forEach(({ socketId }) => {
+            io.to(socketId).emit("user-joined", {
+                clients,
+                username,
+                socketId: socket.id,
+            });
+        });
+    })
+
+    socket.on("code-change", ({ roomId, code }) => {
+        socket.in(roomId).emit("code-change", { code });
+    });
+
+    socket.on("sync-code", ({ socketId, code }) => {
+        io.to(socketId).emit("code-change", { code });
+    });
+
+    socket.on('disconnecting', () => {
+        const rooms = [...socket.rooms];
+        rooms.forEach((roomId) => {
+            socket.in(roomId).emit("disconnected", {
+                socketId: socket.id,
+                username: userSocketMap[socket.id],
+            });
+        });
+        delete userSocketMap[socket.id];
+        socket.leave();
+    });
 
     // socket.on('test',()=>{
     //     socket.to(roomIdGlobal).emit('testing');
@@ -98,5 +144,5 @@ io.on('connection', socket => {
 
 })
 
-
-server.listen(3030);    
+const PORT = process.env.PORT || 3030;
+server.listen(PORT);    
