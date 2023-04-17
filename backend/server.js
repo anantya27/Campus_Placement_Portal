@@ -9,6 +9,7 @@ const { ExpressPeerServer } = require('peer');
 const peerServer = ExpressPeerServer(server, {
   debug: true
 }); 
+const spawn = require('child_process').spawn;
 // const { PeerServer } = require("peer");
 // const peerServer = PeerServer({ port: 9000, path: "/myapp" });
 
@@ -46,12 +47,12 @@ io.on('connection', socket => {
     //     console.log("connection established");
     // });
 
-    socket.on('join-room', (roomId,userId) => {
+    socket.on('join-room', (roomId,userId,username) => {
         
         roomIdGlobal=roomId;
         // console.log("joined room");
         socket.join(roomId);
-        socket.to(roomId).emit('user-connected',userId);
+        socket.to(roomId).emit('user-connected',userId,username);
         // console.log("joined room");
 
         // socket.on('test',()=>{
@@ -60,10 +61,10 @@ io.on('connection', socket => {
         // });
 
 
-        socket.on('message', (message) => {
+        socket.on('message', (username,message) => {
             //send message to the same room
             console.log("on Server>>>>>",message);
-            io.to(roomId).emit('createMessage', message);
+            io.to(roomId).emit('createMessage',username, message);
         }); 
 
         socket.on("canvas-data",(data)=>{

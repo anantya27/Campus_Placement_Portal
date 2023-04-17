@@ -3,24 +3,29 @@ import { useState } from 'react';
 import { useParams } from "react-router-dom";
 import { Peer } from "peerjs";
 // import io from "socket.io-client";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import $ from "jquery";
 import MainTools from './MainTools';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 function Room({socket}) {
 
+  const location = useLocation();
   const { roomId } = useParams();
+  const navigate = useNavigate();
+
   // console.log(roomId);
   // const socket=io("http://localhost:3030");
 
   const [streamCreated, setStreamCreated] = useState(false)
   const [text, setText] = useState("");
   // const [myStream, setMyStream] = useState({})
-  const myStream = useRef({})
+  const myStream = useRef({}) 
 
   const myVideo=document.createElement('video');
   myVideo.muted=true;
   let myVideoStream;
+  let username;
   
   
   useEffect(() => {
@@ -42,7 +47,7 @@ function Room({socket}) {
       //This is a promise
       navigator.mediaDevices.getUserMedia({
         video:true,
-        audio:false
+        audio:true
       }).then(stream => {
           myVideoStream=stream;
           // setMyStream(stream);
@@ -51,8 +56,7 @@ function Room({socket}) {
           // console.log(myStream);
           // console.log("stream created");
           addVideoStream(myVideo,stream);
-
-          socket.on('user-connected',(userId) =>{
+          socket.on('user-connected',(userId,username) =>{
             // console.log("connected");
             connectToNewUser(userId,stream);
           })
@@ -72,7 +76,9 @@ function Room({socket}) {
     peer.on('open', id => {
       
       // console.log(id);
-      socket.emit('join-room',roomId, id)
+      username=location.state?.username;
+      
+      socket.emit('join-room',roomId, id, username)
     })
     // socket.emit("join-room",roomId);
 
@@ -107,8 +113,8 @@ function Room({socket}) {
     }
 
     
-    socket.on('createMessage', (message) =>{
-      $('ul').append(`<li class="message"> <b>user</b><br> ${message} </li>`)
+    socket.on('createMessage', (username,message) =>{
+      $('ul').append(`<li class="message"> <b>${username}</b><br> ${message} </li>`)
       
       console.log("Server>>>>>>>>>>>>>>>",message);
       scrollToBottom();
@@ -126,7 +132,7 @@ function Room({socket}) {
 
       if( e.which==13 && text1.val().length!==0 ){
           console.log(text1.val());
-          socket.emit('message',text1.val());
+          socket.emit('message',username,text1.val());
           setText("");
 
       }
@@ -192,6 +198,11 @@ function Room({socket}) {
     document.querySelector('.main__video_button').innerHTML = html;
   }
 
+  function leaveRoom() {
+    navigate('/');
+  }
+
+
   const handleKeyPress = (event) => {
 
   //   // socket.emit('test');
@@ -252,7 +263,7 @@ function Room({socket}) {
                 </div> */}
                 <div className="main__controls__block">
                 <div className="main__controls__button">
-                    <span className="leave_meeting">Leave Meeting</span>
+                    <span className="leave_meeting" onClick={leaveRoom}>Leave Meeting</span>
                 </div>
                 </div>
             </div>

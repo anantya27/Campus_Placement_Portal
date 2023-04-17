@@ -59,6 +59,7 @@ function Home({uuid}) {
                     src="/code-sync.png"
                     alt="code-sync-logo"
                 />
+                {/* <h4 className="mainLabel" style={{color: '#4aee88'}}>Campus Placement Portal </h4> */}
                 <h4 className="mainLabel">Paste invitation ROOM ID</h4>
                 <div className="inputGroup">
                     <input
