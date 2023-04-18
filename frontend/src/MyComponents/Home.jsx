@@ -93,7 +93,13 @@ function Home({ uuid }) {
         </div>
       </div>
       <footer>
-        <h4 style={{ color: "#8C52FF" }}>College Placement Portal</h4>
+        <h4>
+          Built with 💛 by
+          <a href="https://github.com/anantya27/Campus_Placement_Portal">
+            {" "}
+            Anantya & Akul
+          </a>
+        </h4>
       </footer>
     </div>
   );

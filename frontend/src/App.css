@@ -116,3 +116,10 @@ video{
 .unmute, .stop {
   color: #CC3B33;
 }
+
+/* My css */
+
+.message{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

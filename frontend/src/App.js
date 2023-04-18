@@ -8,9 +8,7 @@ import { Toaster } from 'react-hot-toast';
 
 import Home from "./MyComponents/Home";
 import Room from "./MyComponents/Room";
-// import WhiteboardComp from './MyComponents/WhiteboardComp';
 import Container from './MyComponents/WhiteBoardComponent/container/Container';
-// import Ide from './MyComponents/IdeComponent/IDE';
 import Profile from './MyComponents/ProfilesComponent/Profile';
 import EditorHome from './MyComponents/IdeComponent/pages/EditorHome'
 import EditorPage from './MyComponents/IdeComponent/pages/EditorPage'
