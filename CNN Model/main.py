@@ -41,11 +41,11 @@ async def ping():
 
 def read_file_as_image(data) -> np.ndarray:
     
-    frame = Image.open(BytesIO(data))
-    print("frame: ",frame); 
+    # frame = Image.open(BytesIO(data))
+    # print("frame: ",frame); 
 
-    image = np.array(Image.open(BytesIO(data)))
-    print("img shape: ",image.shape); 
+    # image = np.array(Image.open(BytesIO(data)))
+    # print("img shape: ",image.shape); 
     
     # Through OpenCv library--------------------------
     # frameCV=cv2.imread(BytesIO(data));
