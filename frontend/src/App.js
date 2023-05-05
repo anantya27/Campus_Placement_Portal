@@ -12,6 +12,7 @@ import Container from './MyComponents/WhiteBoardComponent/container/Container';
 import Profile from './MyComponents/ProfilesComponent/Profile';
 import EditorHome from './MyComponents/IdeComponent/pages/EditorHome'
 import EditorPage from './MyComponents/IdeComponent/pages/EditorPage'
+import VideoCapture from './VideoCapture';
 
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
         <Route path="/Ide/:roomId" element={ <EditorPage socket={socket}/> }></Route>
         
         <Route path="/Profiles/:roomId" element={ <Profile/>  }></Route>
+        <Route path="/test" element={ <VideoCapture/>  }></Route>
       </Routes>
 
     </>
